@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="wrapper fn-clear">
+	<div class="form">
+		<div id="msg" {% if !errMsg %} class="fn-none"{% endif %}>{{errMsg}}</div>
+		<div id="form-title">用户登录</div>
+		<form id="loginForm" action="/demo/sign_in" method="post">
+			<div><input id="name" name="name" placeholder="login name"/></div>
+			<div><input id="password" name="pass" type="password" placeholder="password"/></div>
+			<div><button id="loginBtn" type="submit" class="btn-white btn">Sign In</button></div>
+			<div id="form-link"><a href="/demo/sign_up">还没有帐号? 点此注册 </a></div>
+		</form>
+	</div>
+</div>
+{% endblock %}

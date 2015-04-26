@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+var fs = require('fs');
+var path = require('path');
+
+console.log('======= app init =========');
+var basedir = __dirname + "/../../../";
+var demodir = __dirname + "/../demo/";
+
+//复制文件
+console.log(">> create demo dir and file");
+if(!fs.existsSync(basedir+'logs'))	fs.mkdirSync(basedir+'logs',0777);
+
+travel(demodir);
+
+console.log("======== finish ===============");
+console.log("Notice: Pls build your DB use demo.sql, and delete it when finish.");
+
+//遍历目录文件
+function travel(dir, subdir) {
+	subdir = subdir || '';
+    fs.readdirSync(dir).forEach(function (file) {
+        var pathname = path.join(dir, file);
+
+        if (fs.statSync(pathname).isDirectory()) {
+            travel(pathname, file);
+        } else {
+			var dstdir = path.join(basedir,subdir);
+			if(!fs.existsSync(dstdir)){
+				console.log(">> create dir ..."+dstdir);
+				fs.mkdirSync(dstdir,0777);
+			}
+			console.log(">> copy "+ pathname);
+			fs.writeFileSync(path.join(dstdir,file), fs.readFileSync(pathname));
+        }
+    });
+}

@@ -1,0 +1,56 @@
+body {
+    font-size: 13px;
+    margin: 0;
+    color: #000;
+    overflow: hidden;
+    font-family: Helvetica;
+}
+
+ul {
+    padding: 0px;
+    margin-top: 10px;
+    list-style: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    color: #4183c4;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    vertical-align: middle;
+}
+
+input,
+button {
+    font-family: Helvetica;
+}
+
+.fn-left {
+    float: left;
+}
+
+.fn-right {
+    float: right;
+}
+.fn-clear:before,
+.fn-clear:after {
+    display: table;
+    content: "";
+}
+
+.fn-clear:after {
+    clear: both;
+}
+
+.fn-none {
+    display: none;
+}

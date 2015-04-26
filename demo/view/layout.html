@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ecToDo</title>
+	<link rel="stylesheet" href="/main.css?v=2">
+	<link rel="stylesheet" href="/body.css?v=3">
+</head>
+<body>
+    <div class="header">
+            <div class="wrapper fn-clear">
+                <div id="logo">{% if user.img %}<img src="data:image/png;base64,{{user.img}}" />{% else %}ecToDo{% endif %}</div>
+                <ul class="fn-right">
+					{% if user %}
+					<li><a href="/demo">Index</a><li>
+					<li><a href="/demo/profile">Profile</a></li>
+					<li><a href="/demo/sign_out" onclick="return confirm('Sure sign out?');">Sign_Out</a></li>
+					{% endif %}
+                    <li><a rel="bookmark" href="https://github.com/tim1020/ec" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+     </div>
+	<div class="content">
+		 {% block content %}{% endblock %}
+	</div>
+	<div class="footer">
+		<div class="wrapper">Ver 1.0.0, &copy; 2015 <a href="http://www.vrdevs.com"> vrdevs.com</a></div>
+    </div>
+</body>
+</html>

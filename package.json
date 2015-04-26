@@ -1,0 +1,10 @@
+{
+  "name": "ec",
+  "description": "易学易用的简单WEB开发框架",
+  "dependencies": {
+    "mysql": "2.5.5",
+    "swig": "1.4.2"
+  },
+  "version": "1.0.0",
+  "main": "./lib/index.js"
+}

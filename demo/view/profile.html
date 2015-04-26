@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="wrapper fn-clear">
+	<div class="form">
+	<div id="msg" {% if !errMsg %} class="fn-none"{% endif %}>{{errMsg}}</div>
+	<div id="form-title">编辑用户资料：</div>
+	<form id="loginForm" method="post" action="/demo/profile" enctype="multipart/form-data">
+		<div>
+			<label>登录帐号：</label>
+			<input id="name" value="{{user.name}}" readonly title="不允许修改"/>
+		</div>
+		<div>
+			<label>登录密码：</label>
+			<input id="password" name="pass" type="password" placeholder="password"/></div>
+		<div>
+		<label>用户头像:</label>
+		<input type="file" name="img">
+		</div>
+		<div><input type="submit" value =" 保 存 "></div>
+	</form>
+	</div>
+</div>
+{% endblock %}

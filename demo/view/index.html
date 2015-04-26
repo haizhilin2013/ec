@@ -1,0 +1,148 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script>
+var cpage = 1;
+var cstatus = '';
+var gtotal = gtodo = gdone = 0;
+var pageNums = 8;
+function set_nums(total,todo,done){
+	gtotal = total;
+	gtodo = todo;
+	gdone = done;
+	$("#total").text("All( "+total+" )");
+	$("#todo").text("Todo( "+todo+" )");
+	$("#done").text( "Done( "+done+" )");
+}
+function del_task(id){
+	$.post("/demo/task_del",
+		{task_id:id},
+		function(result) {
+			if(result.code != 200) {
+				alert(result.errMsg);
+			}
+			else{
+				get_task(cstatus,1);
+			}
+		},
+		'json'
+	);
+}
+function done_task(id){
+	$.post("/demo/task_upd",
+		{task_id:id,status:2},
+		function(result) {
+			if(result.code != 200) {
+				alert(result.errMsg);
+			}
+			else{
+				get_task(cstatus,1);
+			}
+		},
+		'json'
+	);
+}
+//添加一项任务
+function add_task(){
+	var content =prompt("输入任务内容","");
+	if (content != null && content != ""){
+		$.post("/demo/task_add",
+		{content:content},
+		function(result) {
+			if(result.code != 200) {
+				alert(result.errMsg);
+			}
+			else{
+				get_task(cstatus,1);
+			}
+		},
+		'json'
+		);
+	}
+}
+//获取任务列表并渲染
+function get_task(status,page) {
+	cstatus = status;
+	cpage = page;
+    $.post("/demo/task_get",
+		{status:status,page:page},
+		function(result) {
+			if(result.code != 200){
+				alert(result.errMsg);
+			}
+			else{
+				var nums = result.data.nums;
+				var task = result.data.task;
+				var total = todo = done =  0;
+				$.each(nums, function(idx, obj) {
+					if(obj.status == 1) {
+						total += obj.nums;
+						todo += obj.nums;
+					}else if(obj.status == 2){
+						total += obj.nums;
+						done += obj.nums;
+					}
+				});
+				set_nums(total,todo,done);
+				var content = '';
+				$.each(task,function(idx,obj){
+					var img = '/done.png';
+					var op = '';
+					if(obj.status == 1){ //todo,可以删除和done
+						img = '/todo.png';
+						var id = obj.id;
+						op ='<a href="javascript:del_task('+id+')">Del</a> | <a href="javascript:done_task('+id+')">Done</a>' ;
+					}
+					content += '<div class="li">';
+					content += '<div class="head"><img src="'+img+'" /> '+obj.ctime+'</div>';
+					content += '<div class="content">'+obj.content+'</div>';
+					content += '<div class="bottom">'+op+'</div>';
+					content += '</div>';
+				});
+				$("#list").html(content);
+				totalPage = getPage(cstatus);
+			}
+		},
+		"json"
+	);
+}
+//上一页
+function prev(){
+	if(cpage > 1 ){
+		get_task(cstatus,--cpage);
+	}
+}
+//下一页
+function next(){
+	if(cpage < totalPage){
+		get_task(cstatus, ++cpage);
+	}
+}
+function getPage(status){
+	var page = 1;
+	if(status == '') page = Math.ceil(gtotal/pageNums);
+	else if(status == 1) page = Math.ceil(gtodo/pageNums);
+	else if(status == 2) page = Math.ceil(gdone/pageNums) ;
+	var page_navi = '';
+	if(cpage > 1) page_navi += ' | <a href="javascript:prev()">Prev</a>';
+	if(cpage < page) page_navi += ' | <a href="javascript:next()">Next</a>';
+	$("#navi_page").html(page_navi);
+	return page;
+}
+get_task(1,1);
+</script>
+
+<div class="wrapper fn-clear">
+	<div id="task_lst">
+		<div id="navi">
+			<a href="javascript:add_task();">+Add</a> | 
+			<a href="javascript:get_task('',1)" id="total"></a> | 
+			<a href="javascript:get_task(1,1)" id="todo"></a> | 
+			<a  href="javascript:get_task(2,1)" id="done"></a>
+			<span id="navi_page"></span>
+		</div>
+		<div id="list"></div>
+	</div>
+</div>
+{% endblock %}
