@@ -14,3 +14,8 @@
 * 日志处理log，支持分级，支持设置控制台输出或文件输出，可单独关闭框架debuglog，内置accesslog输出
 * 静态文件服务(支持304)
 * 辅助函数(helper),支持in_array,formatDate,getUTCTime,md5等方法
+
+## v1.0.0-1 (2015-04-26) first commit
+
+* 完善相关文档
+* 增加demo(一个简单的todo系统)
